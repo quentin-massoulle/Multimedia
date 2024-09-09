@@ -1,26 +1,28 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-def afichage(x):
-    d=np.linspace(-1000,1000,x)
-    y = np.sin(d)/d
+
+# Fonction pour afficher sin(x)/x
+def afichage(n, a, b):
+    d = np.linspace(a, b, n)  # 'n' est le nombre de points
+    y = np.sin(d) / d
     plt.plot(d, y)
 
-tab=[20,50,200,400,2000]
+# Fonction pour afficher le signal rectangulaire
+def rectangle(val1, val2, echantillon, mPi, pPi):
+    x = np.linspace(val1, val2, echantillon)
+    y = np.where((x >= mPi) & (x <= pPi), 1, 0)
+    plt.plot(x, y)
 
-#for i in tab :
-    #afichage(i)
-#plt.grid(True)
-#plt.show()
+def rectangle2(val1, val2, echantillon, mPi, pPi):
+    x = np.linspace(val1, val2, echantillon)
+    y = np.where((x >= mPi) & (x <= pPi), np.sin(pPi*x), 0)
+    plt.plot(x, y)
 
 
-#exo 2 
+# Affichage d'un signal rectangulaire entre -pi/2 et 3*pi/2
+rectangle(-20, 20, 10000, -math.pi/2, 3*math.pi/2)
+rectangle2(-20, 20, 10000, -math.pi/2, 3*math.pi/2)
 
-def rectangle(a,b,c):
-      x=np.linspace(a,b,c)
-      y=np.where((x<= math.pi)&(x>= -math.pi),1,0)
-      plt.plot(x,y)
-
-rectangle(-5,5,10000)
 plt.grid(True)
 plt.show()
