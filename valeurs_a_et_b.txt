@@ -1,0 +1,2 @@
+Valeur de a : -0.5
+Valeur de b : 0.7
