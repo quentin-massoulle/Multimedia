@@ -29,31 +29,36 @@ def rectangle2(val1, val2, echantillon, mPi, pPi):
 
 
 # Fonction exponentielle
-def plot_exponential(a,b,x):
-    # Créer une gamme de valeurs x
-    x = np.linspace(x, 10, 400)
+def plot_exponential(a, b, start_x):
+    # Créer une gamme de valeurs x de start_x à 10
+    x = np.linspace(start_x, 10, 400)
     
     # Calculer l'exponentielle de chaque point
     y = a * np.exp(x * b)
     
     # Tracer la courbe
-    plt.plot(x, y, label="y = e^x")
+    plt.plot(x, y, label=f'y = {a} * e^({b} * x)')
     
     # Ajouter des labels et légendes
-    plt.axhline(0, color='black',linewidth=1)
-    plt.axvline(0, color='black',linewidth=1)
+    plt.axhline(0, color='black', linewidth=1)
+    plt.axvline(0, color='black', linewidth=1)
     plt.xlabel('x')
     plt.ylabel('y')
     plt.title('Courbe de la fonction exponentielle')
     plt.legend()
     plt.grid(True)
     plt.show()
-    with open('valeurs_a_et_b.txt', 'w') as file:
-        file.write(f'Valeur de a : {a}\n')
-        file.write(f'Valeur de b : {b}\n')
+    
+    # Enregistrer les valeurs x et y dans un fichier texte
+    with open('points_x_y.txt', 'w') as file:
+        file.write('x, y\n')  # En-tête
+        # Sélectionner les 10 premiers points
+        for X, Y in zip(x[:10], y[:10]):
+            file.write(f'{X:.2f}, {Y:.2f}\n')  # Formatage avec 2 décimales
 
-a=-0.5
-b=0.7
-x=2
+a = 10
+b = 7
+start_x = 2
+
 # Exemple d'utilisation
-plot_exponential(a,b,x)
+plot_exponential(a, b, start_x)
