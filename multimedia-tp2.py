@@ -21,8 +21,8 @@ def rectangle2(val1, val2, echantillon, mPi, pPi):
 
 
 # Affichage d'un signal rectangulaire entre -pi/2 et 3*pi/2
-rectangle(-20, 20, 10000, -math.pi/2, 3*math.pi/2)
-rectangle2(-20, 20, 10000, -math.pi/2, 3*math.pi/2)
+rectangle(-5, 5, 10000, -math.pi/2, 3*math.pi/2)
+rectangle2(-5, 5, 10000, -math.pi/2, 3*math.pi/2)
 
 plt.grid(True)
 plt.show()
