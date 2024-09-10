@@ -62,3 +62,4 @@ start_x = 2
 
 # Exemple d'utilisation
 plot_exponential(a, b, start_x)
+
