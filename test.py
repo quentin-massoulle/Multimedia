@@ -17,68 +17,60 @@ def lire_valeurs_du_fichier(fichier):
 fichier = 'math.txt'  # Nom du fichier contenant les données
 x_values, y_values = lire_valeurs_du_fichier(fichier)  # Appel de la fonction pour lire les données du fichier
 
-# Transformation logarithmique de y
-log_y_values = np.log(y_values)  # Appliquer le logarithme naturel aux valeurs de y (linéariser la relation exponentielle)
 
-# Régression linéaire pour estimer ln(a) et b
-A = np.vstack([x_values, np.ones(len(x_values))]).T  # Créer la matrice A avec les valeurs de x et une colonne de 1
-# Effectuer la régression linéaire (méthode des moindres carrés) pour trouver la pente (b) et l'ordonnée à l'origine (ln(a))
-slope, intercept = np.linalg.lstsq(A, log_y_values, rcond=None)[0]  
+def regretion(x_values,y_values):
+    # Transformation logarithmique de y
+    log_y_values = np.log(y_values)  # Appliquer le logarithme naturel aux valeurs de y (linéariser la relation exponentielle)
 
-# Calcul des paramètres estimés
-b_estimated = slope  # La pente de la régression linéaire est le paramètre b
-ln_a_estimated = intercept  # L'ordonnée à l'origine est ln(a)
-a_estimated = np.exp(ln_a_estimated)  # Calculer a en prenant l'exponentielle de ln(a)
+    # Régression linéaire pour estimer ln(a) et b
+    A = np.vstack([x_values, np.ones(len(x_values))]).T  # Créer la matrice A avec les valeurs de x et une colonne de 1
+    # Effectuer la régression linéaire (méthode des moindres carrés) pour trouver la pente (b) et l'ordonnée à l'origine (ln(a))
+    slope, intercept = np.linalg.lstsq(A, log_y_values, rcond=None)[0]  
 
-# Affichage des résultats
-print(f"Valeur estimée de a : {a_estimated}")  # Afficher la valeur estimée de a
-print(f"Valeur estimée de b : {b_estimated}")  # Afficher la valeur estimée de b
+    # Calcul des paramètres estimés
+    b_estimated = slope  # La pente de la régression linéaire est le paramètre b
+    ln_a_estimated = intercept  # L'ordonnée à l'origine est ln(a)
+    a_estimated = np.exp(ln_a_estimated)  # Calculer a en prenant l'exponentielle de ln(a)
 
-# Transformation logarithmique de y_values
-Y = np.log(y_values)
-# -> Nous prenons le logarithme naturel des valeurs de y pour transformer
-# l'équation exponentielle y = a * exp(b * x) en une équation linéaire :
-# ln(y) = ln(a) + b * x
-# Cela nous permet d'utiliser une régression linéaire pour estimer les paramètres a et b.
+    # Affichage des résultats
+    print(f"Valeur estimée de a par regretion linaiaire : {a_estimated}")  # Afficher la valeur estimée de a
+    print(f"Valeur estimée de b par regretion linaiaire : {b_estimated}")  # Afficher la valeur estimée de b
+def matriceille(y_values,X_values):
+        
+    # Transformation logarithmique de y_values
+    Y = np.log(y_values)
+    # -> Nous prenons le logarithme naturel des valeurs de y pour transformer
+    # l'équation exponentielle y = a * exp(b * x) en une équation linéaire :
+    # ln(y) = ln(a) + b * x
+    # Cela nous permet d'utiliser une régression linéaire pour estimer les paramètres a et b.
 
-# Étape 2 : Construction de la matrice X
-# Ajouter une colonne de 1 pour l'ordonnée à l'origine (biais)
-X = np.column_stack((x_values, np.ones(len(x_values))))
-# -> Ici, on crée une matrice X avec deux colonnes : la première est constituée des valeurs de x,
-# et la deuxième est une colonne de 1 qui permet de représenter l'ordonnée à l'origine ln(a).
-# Cela modélise l'équation linéaire : Y = b * x + ln(a)
+    # Étape 2 : Construction de la matrice X
+    # Ajouter une colonne de 1 pour l'ordonnée à l'origine (biais)
+    X = np.column_stack((x_values, np.ones(len(x_values))))
+    # -> Ici, on crée une matrice X avec deux colonnes : la première est constituée des valeurs de x,
+    # et la deuxième est une colonne de 1 qui permet de représenter l'ordonnée à l'origine ln(a).
+    # Cela modélise l'équation linéaire : Y = b * x + ln(a)
 
-# Étape 3 : Calcul des coefficients de régression
-# Calcul de beta = (X^T X)^{-1} X^T Y
-XtX = np.dot(X.T, X)
-XtY = np.dot(X.T, Y)
-beta = np.linalg.inv(XtX).dot(XtY)
-# -> XtX est le produit matriciel de la transposée de X avec X.
-# -> XtY est le produit matriciel de la transposée de X avec Y.
-# -> Nous utilisons l'inverse de XtX et le produit avec XtY pour résoudre l'équation linéaire et trouver les coefficients de régression.
-# beta contient les coefficients estimés : [b, ln(a)].
+    # Étape 3 : Calcul des coefficients de régression
+    # Calcul de beta = (X^T X)^{-1} X^T Y
+    XtX = np.dot(X.T, X)
+    XtY = np.dot(X.T, Y)
+    beta = np.linalg.inv(XtX).dot(XtY)
+    # -> XtX est le produit matriciel de la transposée de X avec X.
+    # -> XtY est le produit matriciel de la transposée de X avec Y.
+    # -> Nous utilisons l'inverse de XtX et le produit avec XtY pour résoudre l'équation linéaire et trouver les coefficients de régression.
+    # beta contient les coefficients estimés : [b, ln(a)].
 
-# Extraction des coefficients
-b_estimated = beta[0]  # Pente (b)
-ln_a_estimated = beta[1]  # Ordonnée à l'origine (ln(a))
-a_estimated = np.exp(ln_a_estimated)  # Calcul de a en exponentiant ln(a)
-# -> Nous récupérons la pente (b) et l'ordonnée à l'origine (ln(a)) à partir du vecteur beta.
-# -> a est calculé en prenant l'exponentielle de ln(a).
+    # Extraction des coefficients
+    b_estimated = beta[0]  # Pente (b)
+    ln_a_estimated = beta[1]  # Ordonnée à l'origine (ln(a))
+    a_estimated = np.exp(ln_a_estimated)  # Calcul de a en exponentiant ln(a)
+    # -> Nous récupérons la pente (b) et l'ordonnée à l'origine (ln(a)) à partir du vecteur beta.
+    # -> a est calculé en prenant l'exponentielle de ln(a).
 
-# Affichage des résultats
-print(f"Valeur estimée de a par matricielle  : {a_estimated}")
-print(f"Valeur estimée de b par matricielle: {b_estimated}")
-# Génération des points pour la courbe ajustée
-x_fit = np.linspace(min(x_values), max(x_values), 100)
-y_fit = a_estimated * np.exp(b_estimated * x_fit)
-
-# Tracer les données originales et la courbe ajustée
-plt.figure(figsize=(10, 6))  # Créer une figure de taille 10x6 pouces
-plt.scatter(x_values, y_values, color='blue', label='Données originales')  # Tracer les points de données (x, y) originaux
-plt.plot(x_fit, y_fit, color='red', label=f'Ajustement exponentiel: y = {a_estimated:.2f} * e^({b_estimated:.2f} * x)')  # Tracer la courbe ajustée
-plt.xlabel('x')  # Légende de l'axe des abscisses
-plt.ylabel('y')  # Légende de l'axe des ordonnées
-plt.title('Ajustement exponentiel des points à partir du fichier')  # Titre du graphique
-plt.legend()  # Afficher la légende
-plt.grid(True)  # Ajouter une grille au graphique
-plt.show()  # Afficher le graphique
+    # Affichage des résultats
+    print(f"Valeur estimée de a par matricielle  : {a_estimated}")
+    print(f"Valeur estimée de b par matricielle: {b_estimated}")
+    # Génération des points pour la courbe ajustée
+matriceille(y_values,x_values)
+regretion(x_values,y_values)
