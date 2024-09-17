@@ -51,13 +51,12 @@ def plot_exponential(a, b, start_x):
     
     # Enregistrer les valeurs x et y dans un fichier texte
     with open('points_x_y.txt', 'w') as file:
-        file.write('x, y\n')  # En-tête
         # Sélectionner les 10 premiers points
-        for X, Y in zip(x[:10], y[:10]):
+        for X, Y in zip(x, y):
             file.write(f'{X:.2f}, {Y:.2f}\n')  # Formatage avec 2 décimales
 
-a = 10
-b = 7
+a = 5
+b = 2.5
 start_x = 2
 
 # Exemple d'utilisation
