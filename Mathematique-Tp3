@@ -1,0 +1,47 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return 0.02*np.power(x, 3) + 0.2*np.power(x, 2) - 5*x - 30
+
+def f_prime(x):
+    return 0.06*np.power(x, 2) + 0.4*x - 5
+
+def delta_x(f_x0, f_prime_x0):
+    return -f_x0 / f_prime_x0
+
+
+x = np.linspace(-30, 20, 100)
+
+
+y = f(x)
+plt.plot(x, y, label=r"$f(x) = 0.02x^3 + 0.2x^2 - 5x - 30$")
+plt.axhline(0, color='black',linewidth=1) 
+plt.grid(True)
+
+
+
+x0 = x[0] 
+x_values = []  
+
+
+while True:
+    f_prime_x0 = f_prime(x0)
+    delta_de_x = delta_x(f(x0), f_prime_x0)
+    x_values.append(x0)
+    x0 += delta_de_x
+
+    if np.abs(f(x0)) < 0.0001: 
+        break
+
+
+print(f"Racine trouvée : x ≈ {x0:.6f}")
+
+for x_iter in x_values:
+    plt.plot(x_iter, f(x_iter), 'ro') 
+plt.plot([], 'ro', label="valeur de x0")
+
+
+plt.plot(x0, 0, 'go', label=f"Racine: x ≈ {x0:.6f}")  
+plt.legend()
+plt.show()
